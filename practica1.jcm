@@ -18,6 +18,10 @@ mas practica1 {
       focus: w.c1 
     }
 
+    agent robert: user_preferences_agents.asl {
+      
+    }
+
     workspace w {
       artifact c1: example.Counter(3) 
     }
