@@ -1,0 +1,39 @@
+.idea
+.DS_Store
+docs/api
+doc/api
+bin
+build
+APDescription.txt
+MTPs-Main-Container.txt
+.vscode
+
+.idea
+.vscode
+
+*.log
+.stop___MAS
+*~
+.gradle
+.settings
+doc/*.html
+
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.war
+*.ear
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+src/test/java/project/log
+
+.classpath
+.project
+
+
+
