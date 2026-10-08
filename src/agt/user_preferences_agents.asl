@@ -1,22 +1,35 @@
-// Agent bob in project practica1
+// Agent robert in project practica1
 
-/* Initial beliefs and rules -> information about the environment, other agents, itself application
-siguiente sesion se trabajara con beliefs */
-temperature(20).
+/* Initial beliefs and rules -> information about the environment,
+ other agents, itself application */
 temperature(aula1_4, 20).
+preference(20).
 
 /* Initial goals -> the agents objectives*/
-!temperature(20).
-!happy(bob).
 
 !start.
 
 /* Plans -> specifies how goals can be achieved by actions*/
 
-+!temperature(20) <- .print("Temperature is 20.");
-+!happy(bob) <- .print("Bob is happy.");
-    <- kiss(bob).
+// temperature(T) is perceived from the hvac artifact
++temperature(T) : preference(P) & math.abs(T-P) > 2
+    <- startCooling;
+       .print("Temperature is: ", T).
 
++temperature(T) : preference(T)
+    <- stopAirConditioner;
+       .print("Temperature is: ", T).
+
+// messages sent by bob
++happy(X)[source(A)]
+    <- .print(A, " dice que ", X, " es feliz").
+
+-happy(X)[source(A)]
+    <- .print("pobrecito ", X, " no es feliz").
+
++!printHolaMundo(N)
+    <- .print("Hola mundo de parte de: ", N);
+       .wait(100).
 
 +!start : true
     <- .print("hello world.");
