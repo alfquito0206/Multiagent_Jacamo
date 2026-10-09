@@ -13,10 +13,18 @@
        .date(Y,M,D); .time(H,Min,Sec,MilSec); // get current date & time
        +started(Y,M,D,H,Min,Sec);             // add a new belief
        .my_name(N);
-       .send(robert, tell, happy(bob));
-       .send(robert, untell, happy(bob));
-       .send(robert, achieve, printHolaMundo(N));
-       .send(robert, unachieve, printHolaMundo(N)).
+       .send(rc, tell, happy(bob));
+       .send(rc, untell, happy(bob));
+       .send(rc, achieve, printHolaMundo(N));
+       .send(rc, unachieve, printHolaMundo(N));
+       .send(rc, askOne, preference(P));
+       .send(rc, askOne, temperature(X), T);
+       .send(rc, askOne, happy(X), A);
+       // .wait (1000);
+       .print(A).
+
++preference(P)[source(A)]
+    <- .print("Me ha llegado la preferencia: ", P).
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }

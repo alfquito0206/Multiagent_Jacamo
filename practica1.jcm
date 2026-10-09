@@ -15,16 +15,16 @@
 mas practica1 {
 
     agent bob: sample_agent.asl {
-      focus: w.hvac     //w.c1
+      focus: w.c1
     }
 
-    agent robert: user_preferences_agents.asl {
+    agent rc: user_preferences_agents.asl {
       focus: w.hvac
     }
 
     workspace w {
       artifact c1: example.Counter(3)
-      artifact hvac: devices.HVAC(25)
+      artifact hvac: devices.HVAC(30)
     }
 
     organisation o: org.xml {

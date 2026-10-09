@@ -3,7 +3,8 @@
 /* Initial beliefs and rules -> information about the environment,
  other agents, itself application */
 temperature(aula1_4, 20).
-preference(20).
+preference(24).
+happy(calamardo).
 
 /* Initial goals -> the agents objectives*/
 
