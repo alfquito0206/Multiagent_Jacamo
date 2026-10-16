@@ -20,8 +20,18 @@
        .send(rc, askOne, preference(P));
        .send(rc, askOne, temperature(X), T);
        .send(rc, askOne, happy(X), A);
-       // .wait (1000);
-       .print(A).
+       .send(rc, askAll, happy(X), Lista);
+       .nth(0, Lista, Cabeza);
+       .print("Este es el primero que esta feliz: ", Cabeza);
+       //tellHow
+       .send(rc, tellHow, "@saludar +!saludar(X) <- .print(\"Hola: \", X).");
+       .wait(500);
+       .send(rc, achieve, saludar("Paco"));
+       //UntellHow
+       //signal
+       .send(rc, signal, happy(bob));
+       .send(rc, inform, happy(victor)). 
+       
 
 +preference(P)[source(A)]
     <- .print("Me ha llegado la preferencia: ", P).

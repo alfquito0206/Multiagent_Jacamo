@@ -28,14 +28,26 @@ happy(calamardo).
 -happy(X)[source(A)]
     <- .print("pobrecito ", X, " no es feliz").
 
+
++!kqml_received(Agent, inform, C, _) <-
+    +C;
+    .print("Llego: ", C).
+
+
++happy(victor) <- .print("victor es feliz").
+
 +!printHolaMundo(N)
     <- .print("Hola mundo de parte de: ", N);
        .wait(100).
+//+?preference(X) 
 
 +!start : true
     <- .print("hello world.");
        .date(Y,M,D); .time(H,Min,Sec,MilSec); // get current date & time
-       +started(Y,M,D,H,Min,Sec).             // add a new belief
+       +started(Y,M,D,H,Min,Sec);
+       ?preference(P);
+       .print("La preferencia es: ", P).
+       // add a new belief
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }

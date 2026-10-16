@@ -14,12 +14,26 @@
 
 mas practica1 {
 
-    agent bob: sample_agent.asl {
+    /*agent bob: sample_agent.asl {
       focus: w.c1
+    }*/
+      
+    agent mario: personal_assistant.asl {
+      beliefs: preference(20)
     }
 
-    agent rc: user_preferences_agents.asl {
+    agent luigi: personal_assistant.asl {
+      beliefs: preference(23)
+    }
+
+    agent bowser: personal_assistant.asl {
+      beliefs: preference(28)
+    }
+
+    agent rc: room_controller.asl {
       focus: w.hvac
+      goals: voating([18, 21, 27], 1000)
+      beliefs: preference(25)
     }
 
     workspace w {
@@ -29,7 +43,7 @@ mas practica1 {
 
     organisation o: org.xml {
       group g1 : group1 {
-        players: bob role1
+        //players: bob role1
       }
     }
 
