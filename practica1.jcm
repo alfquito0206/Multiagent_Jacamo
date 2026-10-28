@@ -19,26 +19,30 @@ mas practica1 {
     }*/
       
     agent mario: personal_assistant.asl {
-      beliefs: preference(20)
+      beliefs: preference(22)
+      focus w.vm
     }
 
     agent luigi: personal_assistant.asl {
       beliefs: preference(23)
+      focus w.vm
     }
 
     agent bowser: personal_assistant.asl {
       beliefs: preference(28)
+      focus w.vm
     }
 
     agent rc: room_controller.asl {
-      focus: w.hvac
-      goals: voating([18, 21, 27], 1000)
-      beliefs: preference(25)
+      focus: w.hvac, w.vm
+      goals: voting([18, 21, 27], 1000)
+      //beliefs: preference(25)
     }
 
     workspace w {
       artifact c1: example.Counter(3)
       artifact hvac: devices.HVAC(30)
+      artifact vm: voting.VotingMachine([mario, luigi, bowser], 1000)
     }
 
     organisation o: org.xml {

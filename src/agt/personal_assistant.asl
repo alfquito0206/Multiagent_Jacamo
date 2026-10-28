@@ -10,6 +10,8 @@
 !start.
 
 /* Plans -> specifies how goals can be achieved by actions*/
+
++status("closed" <- ,print("Votacion cerrada.")).
 +open_voating(ConvId, Options, timeout) <-
     ?preference(P);
     ?my_vote(Options, P, V);

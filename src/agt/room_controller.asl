@@ -9,6 +9,17 @@
 
 !start.
 
+/*plans*/
+
++!startVoting(Options, Timeout) <- 
+    ?censo(Censo);
+   open(Options, Censo, Timeout);
+   .print("---Inicio de votacion ---").
+
+censo(C) :- .all_names(A) & .my_name(Rm) & .delete(Rm, A, C).
+
+
+
 +!voting(Options, Timeout) <- 
     ConvId = 1;
     !open_voting(ConvId, Options, Timeout);
