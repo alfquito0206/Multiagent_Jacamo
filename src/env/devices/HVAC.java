@@ -1,6 +1,6 @@
 package devices;
 
-import cartago.*;
+import cartago.*; // Necesario para hacer un artefacto.
 
 public class HVAC extends Artifact {
 
@@ -9,15 +9,15 @@ public class HVAC extends Artifact {
 	private double temperature;
 	//private double preferredTemperature;
 
-	void init(int temp) {
+	void init(int temp) { // Es como el constructor, lo primero en ejecutarse
 		this.temperature = temp; // initial simulated value
 		//this.preferredTemperature = prefTemp;
 		defineObsProperty("state","idle");
 		defineObsProperty("temperature",temperature);
  		//defineObsProperty("preferred_temperature",preferredTemperature);
 
-		//sensorPanel = new TemperatureSensorPanel(this,temp);
-		//sensorPanel.setVisible(true);
+		sensorPanel = new TemperatureSensorPanel(this,temp);
+		sensorPanel.setVisible(true);
 	}
 
 	@OPERATION void startHeating(){

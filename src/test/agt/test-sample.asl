@@ -1,4 +1,4 @@
-// Agent that tests 'bob' in project practica1
+// Agent that tests 'bob' in project smartroom
 
 // includes target agent to tests
 { include("sample_agent.asl") }

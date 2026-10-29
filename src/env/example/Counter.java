@@ -1,4 +1,4 @@
-// CArtAgO artifact code for project practica1
+// CArtAgO artifact code for project smartroom
 
 package example;
 

@@ -1,4 +1,4 @@
-package example;
+package devices; // Antes estaba puesto a voting por defecto
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +11,7 @@ import cartago.Artifact;
 import cartago.INTERNAL_OPERATION;
 import cartago.OPERATION;
 import cartago.OUTPORT;
+import cartago.OperationException;
 import jason.asSyntax.ASSyntax;
 import jason.asSyntax.ListTerm;
 import jason.asSyntax.parser.ParseException;
@@ -34,7 +35,7 @@ public class VotingMachine extends Artifact {
 
   public void init() {
     // TODO (Task 1): define a status property with values open/closed
-    defineObsProperty("status", "closed");
+    defineObsProperty("status", "close");
   }
 
   @OPERATION
@@ -43,7 +44,7 @@ public class VotingMachine extends Artifact {
     this.votes = new ArrayList<>();
     this.options = new ArrayList<>();
 
-    for (Object v: voters) {
+    for (Object v: voters) { // Rec
       this.voters.add(v.toString());
     }
 
@@ -52,15 +53,16 @@ public class VotingMachine extends Artifact {
     }
 
     ListTerm optionTerms = createOptionTermsList(options);
-    // TODO (Task 1): expose the options in optionTerms as an observable property named "options"  
-    defineObsProperty("Options", optionTerms);
+    // TODO (Task 1): expose the options in optionTerms as an observable property named "options"
+    defineObsProperty("options", optionTerms);
 
     this.timeout = timeout;
     defineObsProperty("timeout", this.timeout);
 
     // TODO (Task 1): update the "status" observable property to "open" to announce that voting is open
-    getObsProperty("status").updateValue("open");
-    // TODO (Task 3): uncomment this line after implementing the countfown internal operation
+    getObsProperty("status").updateValue("open"); // Aquí cambio la propiedad status a open.
+    // TODO (Task 3): uncomment this line after implementing the countdown internal operation
+    
     // execInternalOp("countdown");
   }
 
@@ -86,8 +88,7 @@ public class VotingMachine extends Artifact {
     int result = computeResult();
 
     // TODO (Task 1): expose the result as an observable property named "result"
-    defineObsProperty("Result", result);
-
+    defineObsProperty("result", result);
     // TODO (Task 1): update the "status" observable property to "close" to announce that voting is closed
     getObsProperty("status").updateValue("close");
     // TODO (Task 4): uncomment this block after completing the room controller agent program
@@ -103,10 +104,16 @@ public class VotingMachine extends Artifact {
   // invoked at the end of the open() operation.
   @INTERNAL_OPERATION
   private void countdown() {
-    log("Voting is closing!");
 
     // TODO (Task 3): Use the await_time method to wait for the specified timeout, then invoke the
     // close operation.
+    try{
+      wait(timeout);
+      log("Voting is closing!");
+      close();
+    } catch (Exception e) {
+      log("Countdown interrupted: " + e.getMessage());
+    }
   }
 
   // This method is used to convert datum from Jason to Java
