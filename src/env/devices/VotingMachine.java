@@ -63,7 +63,7 @@ public class VotingMachine extends Artifact {
     getObsProperty("status").updateValue("open"); // Aquí cambio la propiedad status a open.
     // TODO (Task 3): uncomment this line after implementing the countdown internal operation
     
-    // execInternalOp("countdown");
+    execInternalOp("countdown");
   }
 
   @OPERATION
@@ -107,13 +107,10 @@ public class VotingMachine extends Artifact {
 
     // TODO (Task 3): Use the await_time method to wait for the specified timeout, then invoke the
     // close operation.
-    try{
-      wait(timeout);
-      log("Voting is closing!");
-      close();
-    } catch (Exception e) {
-      log("Countdown interrupted: " + e.getMessage());
-    }
+    // await_time (de CArtAgO) y no wait() de Java: wait() lanza IllegalMonitorStateException
+    await_time(timeout);
+    log("Voting is closing!");
+    close();
   }
 
   // This method is used to convert datum from Jason to Java

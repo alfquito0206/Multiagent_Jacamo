@@ -27,18 +27,19 @@ mas practica1 {
     agent luiggi: personal_assistant.asl {
       beliefs: preference(23)
       focus: vm::w.vm
-      // focus: w.vm // antes
+      //focus: w.vm // antes
     }
 
     agent bowser: personal_assistant.asl {
       beliefs: preference(28)
       focus: vm::w.vm
-      // focus: w.vm // antes
+      //focus: w.vm // antes
     }
 
     agent rc: room_controller.asl {
       focus: w.hvac
       focus: vm::w.vm
+      focus: w.c1
       goals: startVoting([21, 23, 27], 1000)
       // goals: voting([21, 23, 27], 1000) // Se ha quitado para que no de problemas con la antigua forma de votar
     }
@@ -48,9 +49,9 @@ mas practica1 {
     }*/
 
     workspace w {
-      artifact c1: example.Counter(3)
       artifact hvac: devices.HVAC(30)
       artifact vm: devices.VotingMachine()
+      artifact c: example.Counter(3)
     }
 
     organisation o: org.xml {
@@ -58,7 +59,5 @@ mas practica1 {
         players: bob role1
       }
     }
-
-    
 
 }

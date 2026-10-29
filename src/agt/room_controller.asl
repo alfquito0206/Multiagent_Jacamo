@@ -23,6 +23,27 @@
       en A (sin valor). */
 censo(C) :- .all_names(A) & .my_name(rc) & .delete(rc, A, C). // Quiero borrar rc de todos los agentes (A) y guardar el resultado de la resta en C
 
++vm::result(R) <-   // namespace con "::" (con ":" se interpretaba como contexto del plan)
+    .print("El resultado de la votacion ha sido: ", R);
+    -+preference(R);
+    !regular(R).
+
+// Decide si enfriar, calentar o nada según la temperatura actual del HVAC
++!regular(P) : temperature(T) & T > P <- startCooling.
++!regular(P) : temperature(T) & T < P <- startHeating.
++!regular(P) <- .print("Ya estamos a ", P, " grados").
+
+// Para cuando llega (o se pasa) de la temperatura objetivo
++temperature(T) : preference(P) & state("cooling") & T <= P <-
+    stopAirConditioner;
+    .print("Temperatura objetivo alcanzada: ", T).
++temperature(T) : preference(P) & state("heating") & T >= P <-
+    stopAirConditioner;
+    .print("Temperatura objetivo alcanzada: ", T).
++temperature(T) <-
+    .print("Ahora la temperatura es: ", T).
+
+
 +!voting(Options, Timeout) <-
     ConvId = 1;
     !open_voting(ConvId, Options, Timeout);
@@ -51,21 +72,23 @@ winner(ConvId, T) :-
     // se cuenta con id todos los votos vengan de quien vengan
     //t(1,25) -> una persona ha votado 25
 
++tick <-
+    ?co::count(C);
+    .print("El contador ahora vale: ", C).
+
+    +contador_actualizado(C) : C>6 <-
+        .print("El contador se ha actualizado a", C).
 
 +vote(ConvId, Ballot)[source(Agent)] <-
     .print(Agent, " ha votado: ", Ballot).
 
-+temperature(T) : preference(P) & math.abs(T-P)>2 <-
-    !temperature(P);
-    .print("La temperatura es ", T).
-
-+temperature(T) : preference(T) <-
-    stopAirConditioner.
-
 +!start : true
     <- .print("hello world.");
        .date(Y,M,D); .time(H,Min,Sec,MilSec); // get current date & time
-       +started(Y,M,D,H,Min,Sec).             // add a new belief
+       +started(Y,M,D,H,Min,Sec). 
+       co :: inc.
+       co::inc_get(3, C);
+       +contador_actualizado(C).        // add a new belief
        // +temperature(25).                      // add a new belief
 
 { include("$jacamo/templates/common-cartago.asl") }

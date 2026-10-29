@@ -23,6 +23,8 @@ public class Counter extends Artifact {
 		prop.updateValue(newValue);
 		newValueArg.set(newValue);
 	}
+	//Desde el agente 
+	//inc_get(3,C)
 
 }
 
