@@ -75,9 +75,8 @@ winner(ConvId, T) :-
     .concat("[startHeating] La temperatura es: ", Actual, " objetivo: ", T, Msg);
     gui::printMsg(Msg);
     .print(Msg).
-
 +!temp(T) : temperature(Actual) & T == Actual <-
-    stopAirConditioner;
+    stopAirConditioner; 
     .print("Ya estamos a la temperatura objetivo: ", T).
 
 +co::tick <-   // con focus co::w.c1 la señal también llega con el namespace co
