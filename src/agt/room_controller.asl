@@ -15,7 +15,7 @@
 +!startVoting(Options, Timeout) <-
     ?censo(Censo);
     open(Options, Censo, Timeout);
-    .print("-----------Inicia la votación-----------").
+    .print("--- Inicio la votación ---").
 
 /*censo(C) :- .all_names(A) & .my_name(rm) & .delete(rm, A, C).
     — La línea daba error por un typo: 'rm' en vez de 'rc'
@@ -24,24 +24,14 @@
 censo(C) :- .all_names(A) & .my_name(rc) & .delete(rc, A, C). // Quiero borrar rc de todos los agentes (A) y guardar el resultado de la resta en C
 
 +vm::result(R) <-   // namespace con "::" (con ":" se interpretaba como contexto del plan)
-    .print("El resultado de la votacion ha sido: ", R);
+    .print("El resultado de la votación ha sido: ", R);
     -+preference(R);
-    !regular(R).
+    !temp(R).
 
-// Decide si enfriar, calentar o nada según la temperatura actual del HVAC
-+!regular(P) : temperature(T) & T > P <- startCooling.
-+!regular(P) : temperature(T) & T < P <- startHeating.
-+!regular(P) <- .print("Ya estamos a ", P, " grados").
-
-// Para cuando llega (o se pasa) de la temperatura objetivo
-+temperature(T) : preference(P) & state("cooling") & T <= P <-
-    stopAirConditioner;
-    .print("Temperatura objetivo alcanzada: ", T).
-+temperature(T) : preference(P) & state("heating") & T >= P <-
-    stopAirConditioner;
-    .print("Temperatura objetivo alcanzada: ", T).
-+temperature(T) <-
-    .print("Ahora la temperatura es: ", T).
+// Para el aire cuando la temperatura está a 1 grado o menos del objetivo (como en la versión del profesor).
+// "not state(\"idle\")" evita llamar a stop si el aire ya está parado.
++temperature(T) : preference(P) & not state("idle") & math.abs(T - P) <= 1 <-
+    stopAirConditioner.
 
 
 +!voting(Options, Timeout) <-
@@ -72,12 +62,30 @@ winner(ConvId, T) :-
     // se cuenta con id todos los votos vengan de quien vengan
     //t(1,25) -> una persona ha votado 25
 
-+tick <-
+// Decide si enfriar, calentar o nada. T: temperatura objetivo, Actual: la que marca el HVAC.
+// Solo se ejecuta una vez (cuando llega el resultado); la parada la hacen los planes +temperature.
++!temp(T) : temperature(Actual) & T < Actual <-
+    startCooling;    // sin "!": es la operación del artefacto HVAC, no un subobjetivo
+    .concat("[startCooling] La temperatura es: ", Actual, " objetivo: ", T, Msg);
+    gui::printMsg(Msg);   // escribe en la ventana del artefacto GUIconsole
+    .print("[startCooling] La temperatura es: ", Actual, " objetivo: ", T).
+
++!temp(T) : temperature(Actual) & T > Actual <-
+    startHeating;
+    .concat("[startHeating] La temperatura es: ", Actual, " objetivo: ", T, Msg);
+    gui::printMsg(Msg);
+    .print(Msg).
+
++!temp(T) : temperature(Actual) & T == Actual <-
+    stopAirConditioner;
+    .print("Ya estamos a la temperatura objetivo: ", T).
+
++co::tick <-   // con focus co::w.c1 la señal también llega con el namespace co
     ?co::count(C);
-    .print("El contador ahora vale: ", C).
+    .print("El contador tiene: ", C).
 
     +contador_actualizado(C) : C>6 <-
-        .print("El contador se ha actualizado a", C).
+        .print("El contador se ha actualizado: ", C).
 
 +vote(ConvId, Ballot)[source(Agent)] <-
     .print(Agent, " ha votado: ", Ballot).
@@ -85,8 +93,8 @@ winner(ConvId, T) :-
 +!start : true
     <- .print("hello world.");
        .date(Y,M,D); .time(H,Min,Sec,MilSec); // get current date & time
-       +started(Y,M,D,H,Min,Sec). 
-       co :: inc.
+       +started(Y,M,D,H,Min,Sec);
+       co::inc;
        co::inc_get(3, C);
        +contador_actualizado(C).        // add a new belief
        // +temperature(25).                      // add a new belief

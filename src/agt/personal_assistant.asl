@@ -18,7 +18,7 @@
 //
 
 +vm::status("close") <- // Este plan es una reacción al ver status de vm a close
-    .print("La votación se ha cerrado").
+    .print("La votación se ha cerrado.").
 
 +vm::status("open") <-
     .print("La votación se ha abierto");
@@ -29,7 +29,7 @@
     ?my_vote(OrderedOptions, P, Papeleta);
     //enviar voto
     vm::vote(Papeleta);
-    .print("He votado ", Papeleta).
+    .print("He votado: ", Papeleta).
 
 // La anterior manera de hacerlo
 
@@ -50,7 +50,7 @@ my_vote([H], _, H).
        +started(Y,M,D,H,Min,Sec);             // add a new belief
        // +temperature(25).                      // add a new belief
         ?preference(P);                          // query a belief. A veces, es necesario hacer consultas mentales del propio agente.
-        .print("La preferencia de temperatura es ", P).
+        .print("Mi preferencia es: ", P).
 
 { include("$jacamo/templates/common-cartago.asl") }
 { include("$jacamo/templates/common-moise.asl") }

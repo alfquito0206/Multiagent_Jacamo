@@ -19,7 +19,7 @@ mas practica1 {
     }*/
 
     agent mario: personal_assistant.asl {
-      beliefs: preference(23)
+      beliefs: preference(22)
       focus: vm::w.vm
       // focus: w.vm //antes
     }
@@ -39,7 +39,9 @@ mas practica1 {
     agent rc: room_controller.asl {
       focus: w.hvac
       focus: vm::w.vm
-      focus: w.c1
+      focus: co::w.c1
+      focus: gui::w.consola
+      
       goals: startVoting([21, 23, 27], 1000)
       // goals: voting([21, 23, 27], 1000) // Se ha quitado para que no de problemas con la antigua forma de votar
     }
@@ -51,12 +53,13 @@ mas practica1 {
     workspace w {
       artifact hvac: devices.HVAC(30)
       artifact vm: devices.VotingMachine()
-      artifact c: example.Counter(3)
+      artifact c1: example.Counter(3)
+      artifact consola: gui.GUIconsole("smartroom")   // "console" ya existe en todo workspace (cartago.tools.Console)
     }
 
     organisation o: org.xml {
       group g1 : group1 {
-        players: bob role1
+        //players: bob role1
       }
     }
 

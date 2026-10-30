@@ -46,14 +46,16 @@ public class HVAC extends Artifact {
 		while (!getObsProperty("state").stringValue().equals("idle")){
 			double temp = prop.doubleValue();
 			prop.updateValue(temp+step);
-			//sensorPanel.setTempValue((int)(Math.round(temp+step)));
+			sensorPanel.setTempValue((int)(Math.round(temp+step)));
 			System.out.println("temp = "+(int)(Math.round(temp+step)));
-			this.await_time(100);
+			this.await_time(1000);
 		}
 	}
 
 	void notifyNewTemperature(double value){
 		ObsProperty prop = getObsProperty("temperature");
+		// Si el slider se movió por setTempValue (mismo valor), no se vuelve a notificar a los agentes
+		if (prop.doubleValue() == value) return;
 		prop.updateValue(value);
 	}
 
